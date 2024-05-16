@@ -1,26 +1,61 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+
+interface Movies {
+  id: number;
+  title: string;
+  poster_path: string;
+  release_date: string;
+}
 
 function App() {
+
+  const [movies, setMovies] = useState<Movies[]>([]);
+
+
+  const apiKey = "083786128e063ae3f75a217e583394f5";
+
+  const popular = "https://api.themoviedb.org/3/movie/popular";
+
+  //title as string
+  //poster_path as a string
+  // id as number
+  //release date as a string
+
+  useEffect(() => {
+    fetchData()
+  },
+    []
+  );
+
+  const fetchData = () => {
+    axios.get(`${popular}?api_key=${apiKey}`).then((response) => {
+      const results = response.data.results;
+      setMovies(results);
+      console.log(movies);
+    })
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container-fluid'>
+      {movies.map((items) => (
+        <div className="movieContainer" key={items.id}>
+          <h2>{items.title}</h2>
+          {items.poster_path && (
+            <img src={`https://image.tmdb.org/t/p/w300${items.poster_path}`} alt={`${items.title}`} />
+          )
+          }
+        </div>
+      ))
+      }
     </div>
   );
+
+
 }
 
 export default App;
+
+
