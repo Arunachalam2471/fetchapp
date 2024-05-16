@@ -50,9 +50,6 @@ function App() {
         </div>
       ))
       }
-         {/* <footer>
-            This is a Movie WebPage
-          </footer> */}
     </div>
   );
 
